@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess | Real-time P2P Chess Platform</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="container">
+        <div class="sidebar">
+            <div class="header">
+                <h1 class="logo">Chess<span>Mate</span></h1>
+            </div>
+            
+            <div id="game-info" class="panel">
+                <div id="status" class="waiting">
+                    <i class="fas fa-circle-notch fa-spin"></i> Game Status: Waiting to start
+                </div>
+                <div id="turn">
+                    <i class="fas fa-chess-pawn"></i> Current Turn: White
+                </div>
+                
+                <div class="timer-container">
+                    <div>
+                        <span class="timer-label"><i class="fas fa-chess-king"></i> White:</span>
+                        <span id="white-timer" class="timer">10:00</span>
+                    </div>
+                    <div>
+                        <span class="timer-label"><i class="fas fa-chess-king fa-flip-vertical"></i> Black:</span>
+                        <span id="black-timer" class="timer">10:00</span>
+                    </div>
+                </div>
+                
+                <div class="time-control-container">
+                    <label for="time-control"><i class="fas fa-clock"></i> Time Control:</label>
+                    <select id="time-control">
+                        <option value="180">3 Minutes</option>
+                        <option value="300">5 Minutes</option>
+                        <option value="600" selected>10 Minutes</option>
+                        <option value="900">15 Minutes</option>
+                        <option value="1800">30 Minutes</option>
+                    </select>
+                </div>
+                
+                <div id="captured-pieces">
+                    <div>
+                        <h3><i class="fas fa-trophy"></i> Captured by White</h3>
+                        <div id="white-captured" class="captured-list"></div>
+                    </div>
+                    <div>
+                        <h3><i class="fas fa-trophy"></i> Captured by Black</h3>
+                        <div id="black-captured" class="captured-list"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="game-setup" class="panel">
+                <div id="create-game-section">
+                    <h2><i class="fas fa-plus-circle"></i> Create New Game</h2>
+                    <button id="create-game-btn"><i class="fas fa-chess"></i> Create Game</button>
+                    <div id="game-id-display" style="display: none;">
+                        <p>Share this Game ID with your opponent:</p>
+                        <div id="game-id" class="game-id"></div>
+                        <button id="copy-id-btn"><i class="fas fa-copy"></i> Copy ID</button>
+                        <div id="copy-success" class="copy-success">
+                            <i class="fas fa-check"></i> Copied to clipboard!
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="join-game-section">
+                    <h2><i class="fas fa-sign-in-alt"></i> Join Existing Game</h2>
+                    <input type="text" id="game-id-input" placeholder="Enter Game ID">
+                    <button id="join-game-btn"><i class="fas fa-handshake"></i> Join Game</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div id="board-container">
+                <div id="board" class="chess-board"></div>
+            </div>
+            
+            <div id="commentary-container" class="panel">
+                <h3><i class="fas fa-comment-alt"></i> Position Analysis</h3>
+                <div id="commentary">Position commentary will appear here...</div>
+            </div>
+            
+            <div id="move-history" class="panel">
+                <h3><i class="fas fa-history"></i> Move History</h3>
+                <div id="pgn" class="pgn-display"></div>
+            </div>
+            
+            <div id="game-messages">
+                <div id="message-display"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

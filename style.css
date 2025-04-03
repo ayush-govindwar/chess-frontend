@@ -1,0 +1,363 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #34495e;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-radius: 6px;
+}
+
+body {
+    font-family: 'Roboto', 'Segoe UI', 'Arial', sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: #f9f9f9;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+@media (min-width: 992px) {
+    .container {
+        flex-direction: row;
+    }
+}
+
+.sidebar {
+    flex: 0 0 340px;
+    margin-right: 0;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        margin-right: 30px;
+        margin-bottom: 0;
+    }
+}
+
+.main-content {
+    flex: 1;
+}
+
+#board-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 30px;
+}
+
+.chess-board {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+h1, h2, h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.panel {
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    border-top: 4px solid var(--secondary-color);
+}
+
+#game-setup, #game-info {
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    border-top: 4px solid var(--secondary-color);
+}
+
+input, select {
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: border 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+}
+
+button {
+    padding: 12px 18px;
+    margin: 10px 0;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.game-id {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    font-family: 'Consolas', 'Monaco', monospace;
+    margin: 15px 0;
+    word-break: break-all;
+    border: 1px solid #e1e5e8;
+    font-size: 14px;
+}
+
+#status, #turn {
+    margin-bottom: 20px;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    background-color: #f8f9fa;
+    border-left: 4px solid var(--primary-color);
+}
+
+#status.in-progress {
+    border-left-color: var(--success-color);
+}
+
+#status.waiting {
+    border-left-color: var(--warning-color);
+}
+
+.pgn-display {
+    height: 250px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 15px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+#message-display {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: var(--border-radius);
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    display: none;
+}
+
+.captured-list {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 40px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.captured-piece {
+    width: 35px;
+    height: 35px;
+    background-size: 100% 100%; 
+    background-repeat: no-repeat;
+    margin: 2px;
+    opacity: 0.9;
+}
+
+#captured-pieces {
+    margin-top: 25px;
+}
+
+#join-game-section, #create-game-section {
+    margin-bottom: 25px;
+}
+
+#game-id-input {
+    width: 100%;
+}
+
+#board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 25px 0;
+}
+
+#board {
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.timer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.timer {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.timer-label {
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+.time-control-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.time-control-container label {
+    margin-right: 15px;
+    font-weight: 600;
+}
+
+#time-control {
+    flex: 1;
+    max-width: 200px;
+}
+
+.action-button {
+    padding: 10px 15px;
+    margin-left: 10px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.header-actions {
+    display: flex;
+}
+
+.logo {
+    font-family: 'Georgia', serif;
+    font-weight: 800;
+    color: var(--primary-color);
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--secondary-color);
+}
+
+.move-number {
+    color: var(--secondary-color);
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.copy-success {
+    background-color: var(--success-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    margin-top: 10px;
+    display: none;
+}
+
+/* Your existing CSS stays the same, just need to update the commentary section */
+
+/* Commentary container styles - updated */
+#commentary-container {
+    margin: 20px 0;
+}
+
+#commentary {
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--secondary-color);
+    font-family: 'Roboto', 'Segoe UI', 'Arial', sans-serif;
+    color: var(--dark-color);
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 60px;
+    transition: all 0.3s ease;
+}
+
+/* Animation for new commentary */
+@keyframes highlight {
+    0% { background-color: #e3f2fd; }
+    50% { background-color: #bbdefb; }
+    100% { background-color: #f8f9fa; }
+}
+
+/* This class can be added via JavaScript when commentary updates */
+.commentary-update {
+    animation: highlight 1.5s ease;
+}
