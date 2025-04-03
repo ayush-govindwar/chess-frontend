@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Connect to WebSocket server
     function connectToServer() {
-        socket = io('http://localhost:3000');
+        socket = io('https://chess-app-9opx.onrender.com');
         
         // Socket event listeners
         socket.on('connect', () => {
