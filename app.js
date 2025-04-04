@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize variables
     let socket;
     let chess = new Chess();
     let board = null;
     let gameId = null;
     let playerColor = null;
     let isPlayerTurn = false;
-    let timers = { w: 600000, b: 600000 }; // Default 10 minutes per player
+    let timers = { w: 600000, b: 600000 }; // remaining time 
     let timerInterval = null;
     let lastMoveTimestamp = Date.now();
     let capturedPieces = { w: [], b: [] };
@@ -27,7 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Connect to WebSocket server
     function connectToServer() {
-        socket = io('https://chess-app-9opx.onrender.com');
+        socket = io('https://chess-app-9opx.onrender.com', {
+            transports: ['websocket'],  
+            upgrade: false 
+        });
         
         // Socket event listeners
         socket.on('connect', () => {
@@ -132,10 +134,10 @@ document.addEventListener('DOMContentLoaded', function() {
             connectToServer();
         }
         
-        // Generate a unique game ID
+
         gameId = generateGameId();
         
-        // Display the game ID
+        // Display the game Id
         document.getElementById('game-id').textContent = gameId;
         document.getElementById('game-id-display').style.display = 'block';
         
@@ -229,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const now = Date.now();
             const elapsed = now - lastMoveTimestamp;
             
-            // Decrement the active timer
+
             timers[color] -= elapsed;
             
             // Make sure timer doesn't go below zero
@@ -274,11 +276,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('white-timer').textContent = whiteTime;
         document.getElementById('black-timer').textContent = blackTime;
         
-        // Highlight active timer
+        // highlight active timer
         document.getElementById('white-timer').className = activeTimer === 'w' ? 'timer active' : 'timer';
         document.getElementById('black-timer').className = activeTimer === 'b' ? 'timer active' : 'timer';
         
-        // Add warning class when timer is low (less than 30 seconds)
+        // less than 30 seconds
         if (timers.w <= 30000) {
             document.getElementById('white-timer').classList.add('warning');
         } else {
@@ -299,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     }
     
-    // Request timer sync from server
+    // timer sync from server
     function syncTimersWithServer() {
         if (socket && gameId) {
             socket.emit('timerSync', {
@@ -309,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Copy game ID to clipboard
+    // copy game Id
     document.getElementById('copy-id-btn').addEventListener('click', function() {
         const gameIdElement = document.getElementById('game-id');
         const range = document.createRange();
@@ -325,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function initializeBoard() {
         try {
             console.log("Starting board initialization");
-            // If board already exists, destroy it first
+            // If board already exists destroy it 
             if (board) {
                 console.log("Destroying existing board");
                 board.destroy();
@@ -348,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Add window resize event to make the board responsive
             $(window).resize(board.resize);
-            // Reset the chess.js instance
+            // Reset chess.js 
             chess = new Chess();
             console.log("Board initialization complete");
 
@@ -362,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Handle piece drag start
+    // if piece can be picked up and moved
     function onDragStart(source, piece) {
         // Only allow the current player to move their pieces
         if (!isPlayerTurn || chess.game_over()) {
@@ -400,15 +402,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check if the move is legal
         try {
-            // Create a move object
+           
             const moveObj = {
                 from: source,
                 to: target,
                 promotion: promotion || 'q' // Default to queen if not specified
             };
             
-            // Check if the move is legal in the client-side chess.js
-            const move = chess.move(moveObj);
+            // check if the move is legal in the client-side chess.js
+            const move = chess.move(moveObj); // attempts to execute a move and updates the board if valid. Returns null if the move is illegal.
+
             
             if (move === null) {
                 console.log('Illegal move detected');
@@ -444,10 +447,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
             
-            // NOTE: We're not updating captured pieces here anymore
-            // The server will send back the updated game state with capture information
-            
-            // Update move history
             updateMoveHistory();
             
             // Toggle player turn
@@ -558,7 +557,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateMoveHistory() {
         const pgnElement = document.getElementById('pgn');
         pgnElement.textContent = chess.pgn();
-        pgnElement.scrollTop = pgnElement.scrollHeight;
+        pgnElement.scrollTop = pgnElement.scrollHeight; // latest moves always visible
     }
     
     // Display captured pieces in the UI
@@ -614,5 +613,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Periodically sync timers with server to prevent desync
-    setInterval(syncTimersWithServer, 10000); // Sync every 10 seconds
+    setInterval(syncTimersWithServer, 10000); // sync every 10 seconds
 });
